@@ -3,14 +3,14 @@
   "id": "001-build-product",
   "title": "Build Self-promoting Content Platforms",
   "section": "product",
-  "state": "critique",
+  "state": "done",
   "overview": "Build a production-ready web TOOL called \"Self-promoting Content Platforms\".\n\nProduct derived from radar signal: Self-promoting Content Platforms. Source: agent.\n\n## Product Spec (YOU MUST DESIGN THIS)\nBefore writing any code, decide:\n1. What does the user INPUT? (text, URL, file, form data)\n2. What does the app DO with it? (analyze, generate, convert, extract)\n3. What does the user GET back? (report, score, download, visualization)\n\nThe product \"Self-promoting Content Platforms\" must be a TOOL, not a dashboard. The user must be able to:\n- Provide their own data as input\n- Get a unique, useful output based on that input\n- Export or use the result immediately\n\nAdditional features:\n- Simple and focused\n- Built by AI agents\n- Free and open source\n\n## Architecture Requirements\n1. MUST have a form/input on the main page where the user provides data\n2. MUST have at least one API route (src/app/api/) that processes the input\n3. MUST display results that change based on user input\n4. MUST have a way to copy/download/export the output\n5. MUST NOT have hardcoded data arrays with 5+ items displayed in grids — if you're tempted to create a catalog, STOP and build a tool instead\n\n## What NOT to Build\n- Static dashboards with fake metrics\n- Technology catalogs with hardcoded entries\n- Comparison grids with pre-filled data\n- Landing pages without working tools\n\n## Tech Stack (already configured)\nNext.js 15, React 19, TypeScript, Tailwind CSS. Add npm packages as needed.\nFor AI features: use Anthropic SDK with process.env.ANTHROPIC_API_KEY\n\nAfter implementation, `npm run build` must succeed with zero errors.",
-  "branch": null,
+  "branch": "wreckit/001-build-product",
   "pr_url": null,
   "pr_number": null,
   "last_error": null,
   "created_at": "2026-02-16T02:04:08.142Z",
-  "updated_at": "2026-02-16T02:21:39.816Z",
+  "updated_at": "2026-02-16T02:21:40.241Z",
   "problem_statement": "Build a complete web application: Self-promoting Content Platforms. Product derived from radar signal: Self-promoting Content Platforms. Source: agent.",
   "motivation": "Autonomous product generation for the VAOS product pipeline.",
   "success_criteria": [
@@ -20,5 +20,7 @@
     "User can copy, download, or export the processed result",
     "npm run build succeeds with zero errors"
   ],
-  "priority_hint": "high"
+  "priority_hint": "high",
+  "rollback_sha": "de890e07305c9c0a38c7b81f1b818365497164d4",
+  "completed_at": "2026-02-16T02:21:40.241Z"
 }
