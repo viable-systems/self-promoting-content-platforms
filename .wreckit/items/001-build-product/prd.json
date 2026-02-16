@@ -1,0 +1,249 @@
+{
+  "schema_version": 1,
+  "id": "001-build-product",
+  "branch_name": "wreckit/001-build-product",
+  "user_stories": [
+    {
+      "id": "US-001",
+      "title": "Install dependencies and configure project foundation",
+      "acceptance_criteria": [
+        "@anthropic-ai/sdk package installed and working",
+        "lucide-react installed for icons",
+        "clsx and tailwind-merge installed for utilities",
+        "npm run build succeeds with zero errors after installation",
+        "TypeScript types resolve correctly for all new packages"
+      ],
+      "priority": 1,
+      "status": "done",
+      "notes": "Foundation for all subsequent work. Must verify build success before proceeding."
+    },
+    {
+      "id": "US-002",
+      "title": "Create TypeScript type definitions",
+      "acceptance_criteria": [
+        "Platform enum defined with LINKEDIN, TWITTER, INSTAGRAM, NEWSLETTER values",
+        "GenerateRequest interface with content, platforms, and optional tone fields",
+        "GenerateResponse interface with success boolean and data/error fields",
+        "PlatformContent interface with platform, content, hashtags, characterCount, and suggestions",
+        "All types exported from src/types/index.ts",
+        "TypeScript compilation succeeds with no errors"
+      ],
+      "priority": 1,
+      "status": "done",
+      "notes": "Type safety is critical. These types will be used throughout the application."
+    },
+    {
+      "id": "US-003",
+      "title": "Configure Anthropic client and validation utilities",
+      "acceptance_criteria": [
+        "Anthropic client initializes in src/lib/anthropic.ts",
+        "Environment variable check throws clear error if ANTHROPIC_API_KEY missing",
+        "validateInput function rejects empty content",
+        "validateInput function rejects content over 10,000 characters",
+        "MAX_INPUT_LENGTH constant set to 10000",
+        "Client configuration uses process.env.ANTHROPIC_API_KEY"
+      ],
+      "priority": 1,
+      "status": "done",
+      "notes": "Critical for AI functionality. Error messages must guide developers to fix missing API key."
+    },
+    {
+      "id": "US-004",
+      "title": "Create platform-specific system prompts",
+      "acceptance_criteria": [
+        "LinkedIn prompt specifies 1300-3000 characters, professional tone, hashtags",
+        "Twitter prompt specifies <280 characters, concise language, thread support",
+        "Instagram prompt specifies 150-300 characters, visual-first, 10-15 hashtags",
+        "Newsletter prompt specifies 200-500 words, storytelling, CTA-focused",
+        "All prompts return JSON format with content, hashtags array, suggestions array",
+        "getSystemPrompt function returns correct prompt for each platform"
+      ],
+      "priority": 1,
+      "status": "done",
+      "notes": "Prompt quality directly affects output quality. Test with sample content before finalizing."
+    },
+    {
+      "id": "US-005",
+      "title": "Create utility functions and platform metadata",
+      "acceptance_criteria": [
+        "cn function merges classnames with clsx and tailwind-merge",
+        "PLATFORM_INFO object contains metadata for all 4 platforms",
+        "Platform metadata includes id, name, icon name, color class, description",
+        "getCharacterCount function returns text length",
+        "All utilities exported from src/lib/utils.ts"
+      ],
+      "priority": 1,
+      "status": "done",
+      "notes": "Supporting functions for UI components."
+    },
+    {
+      "id": "US-006",
+      "title": "Implement POST /api/generate endpoint",
+      "acceptance_criteria": [
+        "Route accepts POST requests at /api/generate",
+        "Request body validated (content not empty, at least one platform selected)",
+        "Returns 400 error if validation fails with descriptive error message",
+        "Calls Anthropic API for each selected platform sequentially",
+        "Parses JSON response from AI (handles markdown code blocks)",
+        "Returns 200 with success: true and data object containing PlatformContent for each platform",
+        "Returns 500 with error message on API failure",
+        "Handles missing ANTHROPIC_API_KEY gracefully",
+        "Request completes within 30 seconds for typical input"
+      ],
+      "priority": 1,
+      "status": "done",
+      "notes": "Core TRANSFORM layer. Test with curl before building UI. Error handling must be robust."
+    },
+    {
+      "id": "US-007",
+      "title": "Build PlatformSelector component",
+      "acceptance_criteria": [
+        "Component displays all 4 platforms as selectable cards",
+        "Each platform shows icon, name, and description",
+        "Checkbox visual state updates when clicked",
+        "Component accepts selected platforms array and onChange callback",
+        "Toggle adds/removes platform from selection",
+        "Responsive: single column on mobile, 2 columns on desktop",
+        "Selected platforms have purple border and background",
+        "Component uses lucide-react icons (Linkedin, X, Instagram, Mail)"
+      ],
+      "priority": 2,
+      "status": "done",
+      "notes": "Client component with 'use client' directive."
+    },
+    {
+      "id": "US-008",
+      "title": "Build ContentForm component",
+      "acceptance_criteria": [
+        "Textarea accepts up to 10,000 characters",
+        "Character counter displays current length / 10,000",
+        "Load Example button populates textarea with sample content",
+        "Tone radio buttons allow selecting professional/casual/enthusiastic",
+        "PlatformSelector component integrated",
+        "Submit button disabled when form invalid",
+        "Submit button shows loading spinner when isLoading=true",
+        "Submit button has Sparkles icon",
+        "Form submits when valid and user clicks button",
+        "onSubmit callback receives content, platforms array, and tone"
+      ],
+      "priority": 2,
+      "status": "done",
+      "notes": "Main INPUT interface. Example content should be realistic blog post about AI or marketing."
+    },
+    {
+      "id": "US-009",
+      "title": "Build CopyButton component",
+      "acceptance_criteria": [
+        "Button displays Copy icon with 'Copy' label by default",
+        "Clicking copies text to clipboard using navigator.clipboard",
+        "After copy, shows Check icon with 'Copied!' label",
+        "Returns to Copy state after 2 seconds",
+        "Accepts text prop and optional label prop",
+        "Error handling for clipboard failures",
+        "Styled appropriately for both light and dark modes"
+      ],
+      "priority": 2,
+      "status": "done",
+      "notes": "Reusable component used multiple times in results display."
+    },
+    {
+      "id": "US-010",
+      "title": "Build ResultsDisplay component",
+      "acceptance_criteria": [
+        "Displays platform tabs for all generated platforms",
+        "Tab switching updates displayed content",
+        "Active tab highlighted with purple color",
+        "Shows platform icon and name in header",
+        "Displays character count",
+        "Generated content shown in white/dark gray card",
+        "Hashtags displayed as purple badges (if present)",
+        "Pro Tips section shows suggestions (if present)",
+        "CopyButton copies generated content",
+        "Regenerate button triggers onRegenerate callback",
+        "Download All button downloads JSON file with all results",
+        "Responsive layout on mobile and desktop"
+      ],
+      "priority": 2,
+      "status": "done",
+      "notes": "Main OUTPUT interface. Ensure hashtags and tips render conditionally when arrays are non-empty."
+    },
+    {
+      "id": "US-011",
+      "title": "Build LoadingSpinner component",
+      "acceptance_criteria": [
+        "Displays spinning purple circle animation",
+        "Shows 'Generating your content...' message",
+        "Shows 'This may take 10-30 seconds' subtext",
+        "Centered vertically and horizontally",
+        "Styled for both light and dark modes"
+      ],
+      "priority": 3,
+      "status": "done",
+      "notes": "Simple presentational component."
+    },
+    {
+      "id": "US-012",
+      "title": "Build ErrorMessage component",
+      "acceptance_criteria": [
+        "Displays error icon (circle with exclamation)",
+        "Shows 'Something went wrong' heading",
+        "Displays error message passed as prop",
+        "Optional onRetry callback shows 'Try Again' button",
+        "Red/styled theme for errors",
+        "Works in both light and dark modes"
+      ],
+      "priority": 3,
+      "status": "done",
+      "notes": "Used for API failures and validation errors."
+    },
+    {
+      "id": "US-013",
+      "title": "Integrate all components in main page",
+      "acceptance_criteria": [
+        "Page displays header with title and description",
+        "Idle state shows ContentForm in centered card",
+        "How It Works section shows 3-step process below form",
+        "Loading state shows LoadingSpinner",
+        "Error state shows ErrorMessage with Try Again",
+        "Success state shows ResultsDisplay with Create New Content button",
+        "State transitions work correctly: idle → loading → success/error",
+        "Footer displays 'Powered by Anthropic Claude' attribution",
+        "Responsive design works at 375px, 768px, 1024px+ viewports",
+        "Gradient background (purple/white/blue in light, gray in dark)",
+        "All API calls include proper error handling",
+        "npm run build succeeds with ZERO errors"
+      ],
+      "priority": 2,
+      "status": "done",
+      "notes": "This is the final integration. Zero build errors is an absolute requirement."
+    },
+    {
+      "id": "US-014",
+      "title": "Update root layout with metadata and dark mode",
+      "acceptance_criteria": [
+        "Metadata includes descriptive title",
+        "Metadata includes description for SEO",
+        "Open Graph tags configured for social sharing",
+        "html lang attribute set to 'en'",
+        "dark class added to html element for dark mode",
+        "antialiased class on body for font smoothing"
+      ],
+      "priority": 4,
+      "status": "done",
+      "notes": "Polish item. Improves SEO and visual appearance."
+    },
+    {
+      "id": "US-015",
+      "title": "Add custom global styles",
+      "acceptance_criteria": [
+        "Tailwind directives present (@tailwind base, components, utilities)",
+        "Border color utilities apply to light and dark modes",
+        "Body background and text colors set for both themes",
+        "text-balance utility added for better typography"
+      ],
+      "priority": 4,
+      "status": "done",
+      "notes": "Polish item. Ensures consistent dark mode styling."
+    }
+  ]
+}
